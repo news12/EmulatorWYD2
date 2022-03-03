@@ -1,2 +1,2 @@
 # EMULATOR WYD II
-MMORPG
+studying c# lang with wyd2 emulator
