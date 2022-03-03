@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <BaseOutputPath>F:\StarNFT2\Bin</BaseOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Resource Include="img\backGround.png" />
+    <Resource Include="img\btnClose.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\btnClose_hover.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="img\btnDefault.png" />
+    <Resource Include="img\btnDefault_hover.png" />
+  </ItemGroup>
+
+
+</Project>

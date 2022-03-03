@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Config>
+	<Ip>192.168.0.106</Ip>
+	<Port>8281</Port>
+	<Status>1</Status>
+	<Title>WYD-Emulator 2.0</Title>
+	<Heigth>20</Heigth>
+	<Width>100</Width>
+	<MaxClient>1000</MaxClient>
+	
+	<Publisher>SelectionGames</Publisher>
+	
+	<StringConnection>server=127.0.0.1;uid=root;pwd=123456;database=wyddb</StringConnection>
+
+	<GameVersion>1020</GameVersion>
+	
+</Config>

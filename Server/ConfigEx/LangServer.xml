@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LangServer>
+	
+	<CharacterLogin>Somente letras e números, 4 a 12 caracteres.</CharacterLogin>
+	<CharacterPass>Somente letras e números, 4 a 10 caracteres.</CharacterPass>
+	<AccountNotFound>Conta não encontrada.</AccountNotFound>
+	<IncorrectPass>Login ou senha incorreto.</IncorrectPass>
+	<WellcomeToLogin>Bem vindo ao Servidor WYD Beta</WellcomeToLogin>
+	<LoginVerify>Verificação de Login efetuada com sucesso, clique em login para conectar.</LoginVerify>
+	<IsConnected>Essa conta já esta conectada, verifique sua conta ou tente novamente mais tarde.</IsConnected>
+	<DbNotConnected>Não foi possivel efetuar uma conexão com o banco de dados.</DbNotConnected>
+	<NotLogin>Você não se conectou de forma adequada, faça login novamente.</NotLogin>
+	<CharacterCreateFail>Falha ao Criar personagem, tente novamente mais tarde.</CharacterCreateFail>
+	<CharacterCreateSuccess>Personagem criado com sucesso!!!</CharacterCreateSuccess>
+	<CharacterSelectFail>Falha ao tentar selecionar o personagem.</CharacterSelectFail>
+	<CharacterNotFound>Personagem não econtrado.</CharacterNotFound>
+	<WellcometoWord>Bem vindo ao mundo de WYD Beta!!!</WellcometoWord>
+	
+</LangServer>
