@@ -18,20 +18,17 @@ namespace Db.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AccountMap());
-            modelBuilder.ApplyConfiguration(new DonateGameMap());
-            modelBuilder.ApplyConfiguration(new PassGameMap());
-            modelBuilder.ApplyConfiguration(new CharacterMap());
-            modelBuilder.ApplyConfiguration(new BotDonateMap());
 
-            modelBuilder.Entity<Account>().Ignore(d => d.Donates);
-
+            modelBuilder.Entity<Account>().Ignore(d => d.NumericFail);
+            modelBuilder.Entity<Account>().Ignore(d => d.Character);
         }
 
         public DbSet<Account>? Accounts { get; set; }
-        public DbSet<DonateGame>? Donates { get; set; }
-        public DbSet<PassGame>? Passwords { get; set; }
-        public DbSet<Character> Characters { get; set; }
-        public DbSet<BotDonate> BotDonates { get; set; }
+        public DbSet<Character>? Characters { get; set; }
+        public DbSet<CharacterLastPosition>? CharacterLastPosition { get; set; }
+        public DbSet<CharacterBag>? CharacterBag { get; set; }
+        public DbSet<CharacterEquip>? CharacterEquip { get; set; }
+        public DbSet<CharacterStatus>? CharacterStatus { get; set; }
 
 
     }

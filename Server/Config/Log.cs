@@ -1,4 +1,5 @@
 ﻿using NLog;
+using Application.Packet;
 
 namespace Application.Config
 {
@@ -38,6 +39,9 @@ namespace Application.Config
 
         public static void Conn(Guid c, bool i) => Write($"Client Socket id {c} {(i ? "" : "des")}connected", ConsoleColor.Yellow);
 
-
+        public static void Rcv(ClientSession c, MsgHeader h) 
+            => Write($"RCV < P: 0x{h.PacketId.ToString("X").PadLeft(4, '0')} | S: {h.Size.ToString().PadLeft(4, '0')} | CID: {c.Id.ToString().PadLeft(5, '0')}", ConsoleColor.Magenta);
+        public static void Snd(ClientSession c, MsgHeader h) 
+            => Write($"SND > P: 0x{h.PacketId.ToString("X").PadLeft(4, '0')} | S: {h.Size.ToString().PadLeft(4, '0')} | CID: {c.Id.ToString().PadLeft(5, '0')}", ConsoleColor.Green);
     }
 }

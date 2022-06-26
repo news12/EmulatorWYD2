@@ -8,7 +8,7 @@ namespace Db.Data.Mapping
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
-            builder.ToTable("game_accounts");
+            builder.ToTable("Account");
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Name)
@@ -20,12 +20,23 @@ namespace Db.Data.Mapping
                 .HasColumnType("varchar")
                 .HasMaxLength(50);
 
+            builder.Property(x => x.Numeric)
+                .HasColumnType("varchar")
+                .HasMaxLength(10);
+
+            builder.Property(x => x.CharOnline)
+                .HasColumnType("smallint")
+                .HasDefaultValue(0);
+
+            builder.Property(x => x.Channel)
+                .HasColumnType("smallint")
+                .HasDefaultValue(0);
+
             builder.Property(x => x.Status)
              .HasColumnType("smallint")
              .HasDefaultValue(0);
 
-            builder.HasMany(x => x.Donates);
-
+            builder.HasMany(x => x.Characters);
 
         }
     }

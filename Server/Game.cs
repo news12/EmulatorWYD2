@@ -1,16 +1,18 @@
-﻿using System.Text;
-using Application.Class.BotTelegram;
+﻿using NetCoreServer;
+using Service.Interface;
+using System.Net;
+using System.Text;
 using Application.Config;
+using Application.Enum;
 using Application.Controller;
-using Telegram.Bot;
-using Telegram.Bot.Polling;
-using Telegram.Bot.Types.Enums;
+using Services.Service;
 
 namespace Application
 {
     public class Game
 	{
-		public long TotalBytes;
+		public  long TotalBytes;
+		public  List<ClientSession>? Clients { get; set; }
 		public bool Active { get; private set; }
 		//public List<Server> Servers { get; private set; }
 
@@ -36,7 +38,7 @@ namespace Application
 
 			}
 
-			Log.LogApp?.Info("Comunicator start...");
+			Log.LogApp?.Info("Game start...");
 		}
 
 
@@ -55,7 +57,7 @@ namespace Application
 			//int messagesRate = 1000000;
 			//int messageSize = 32;
 
-          /*  Log.LogApp?.Info($"Connected Port: {port}");
+            Log.LogApp?.Info($"Connected Port: {port}");
 			Log.LogApp?.Info($"Connected Ip: {Cfg.ConfigXml.Ip}");
 
 			//create new TCP server
@@ -64,91 +66,106 @@ namespace Application
 				OptionReuseAddress = true
 			};
 			//Start server
-			server.Start();*/
+			server.Start();
 
 			Log.LogApp?.Trace("Service started successful.");
 			//encode for GetEncoding
 			Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+			IAccountService accountService = new AccountService();
+			AccountController accountController = new(accountService);
+			Clients = new List<ClientSession>();
 
-			StartBot();
+			accountController.UpdateAll();
 
-			Cfg.TimeDelaySendCharacter = 0;
-			while (true)
+			Log.LogApp?.Trace("Press ENTER to finish or '!' to restart");
+
+		
+			// Perform text input
+			for (; ; )
 			{
-				try
+				string line = Console.ReadLine() ?? "";
+				if (string.IsNullOrEmpty(line))
+					break;
+
+				// Restart the server
+				if (line == "!")
 				{
-					Thread.Sleep(10000);
-					StartClient();
+					Log.LogApp?.Info("Service restarting...");
+					server.Restart();
+					Log.LogApp?.Trace("successful...");
+					continue;
 				}
-				catch (Exception e)
-				{
-					Console.WriteLine(e.Message);
-				}
+
+				// Multicast admin message to all sessions
+				//line = "(admin) " + line;
+				//server.Multicast(line);
 			}
 
-		/*	// Stop the server
+			// Stop the server
 			Log.LogApp?.Info("Service stopping...");
 			server.Stop();
-			Log.LogApp?.Trace("successful.");*/
+			Log.LogApp?.Trace("successful.");
+
 
 		}
 
-		private static void StartClient()
+		public void ClientSessionAdd(ClientSession session, TcpServer server)
 		{
-			// Connect to a remote device.  
+			int maxCLient = 3;
+			long sessions = server.ConnectedSessions;
+			if (Cfg.ConfigXml.Ip.Equals(session.GetIp()))
+			{
+				Log.LogApp?.Info($"Login App Socket[{session.Id}] [{session.GetIp()}] connected");
+			}
+			 if (sessions < maxCLient)
+			{
+                Clients?.Add(session);
+				int sessionId = Clients.FindIndex(c => c.Id == session.Id);
+                ClientSession.NewAccount();
+
+				Log.LogApp?.Info($"Client Socket[{session.Id}] [{session.GetIp()}] connected");
+			}
+			else
+			{
+				session.Close();
+				Log.LogApp?.Warn($"Client Socket[{session.Id}] [{session.GetIp()}] removed, server full");
+			}
+		}
+
+		public void ClientSessionRemove(ClientSession session)
+		{
 			try
 			{
-				AccountController controller = new();
-				controller.GetAcccounts(0);
-				controller.GetDonations(0);
-				controller.GetPasswords(0);
+				if (Log.LogApp == null)
+					Cfg.ConfigLoad();
 
-                if (Cfg.TimeDelaySendCharacter > 5)
-                {
-					Cfg.TimeDelaySendCharacter = 0;
-					controller.GetPlayers();
+				if (session.GetAccount().Id != 0)
+				{
+					AccountController accountController = new();
+					uint status = accountController.GetStatus(session);
 
-                }
-				else
-					Cfg.TimeDelaySendCharacter++;
+					if (status > (uint)ClientStatus.Connection)
+						accountController.SetStatus(session, ClientStatus.Connection);
 
+					if (MyServer.Game.Clients != null)
+					{
+						MyServer.Game.Clients.Remove(session);
+						Log.LogApp?.Info($"Client Socket[{session.Id}] [{session.GetIp()}] Desconnected");
+					}
+					else
+						Log.LogApp?.Info($"Login Socket[{session.Id}] [{session.GetIp()}] Desconnected");
 
+				}
 			}
 			catch (Exception e)
 			{
-				Log.LogApp?.Trace(e.Message);
+				Log.LogApp?.Error(e.Message);
+				//Console.Write(e.Message);
 			}
+
+
+
 		}
-
-		private static async void StartBot()
-        {
-            
-			var bot = new TelegramBotClient(BotConfig.BotToken);
-
-			var me = await bot.GetMeAsync();
-
-			using var cts = new CancellationTokenSource();
-
-			// StartReceiving does not block the caller thread. Receiving is done on the ThreadPool.
-			var receiverOptions = new ReceiverOptions()
-			{
-				AllowedUpdates = Array.Empty<UpdateType>(),
-				ThrowPendingUpdates = true,
-			};
-
-			bot.StartReceiving(updateHandler: UpdateHandlers.HandleUpdateAsync,
-							   pollingErrorHandler: UpdateHandlers.PollingErrorHandler,
-							   receiverOptions: receiverOptions,
-							   cancellationToken: cts.Token);
-
-		
-			Log.LogApp?.Trace($"Service Bot @{me.Username}");
-		
-
-			// Send cancellation request to stop bot
-			//cts.Cancel();
-		}
-
 
 	}
 }

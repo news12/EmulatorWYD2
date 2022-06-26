@@ -4,9 +4,12 @@ namespace Service.Interface
 {
     public interface ICharacterService
     {
-        Character? Get(string name);
-        List<Character> GetAll();
-        void Create(Character data);
-        void Update(Character data);
+        List<Character>? Get(int AccountId);
+        Character? GetOne(int AccountId, int slot);
+        Character Create(Character data);
+        void CreateLastPosition(CharacterLastPosition data);
+        void CreatBag(CharacterBag data);
+        void CreateEquip(CharacterEquip data);
+        void CreateBaseStatus(CharacterStatus data);
     }
 }

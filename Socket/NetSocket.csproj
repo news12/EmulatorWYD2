@@ -19,7 +19,7 @@
     <ApplicationIcon />	
     <OutputType>Library</OutputType>	
     <StartupObject />	
-    <BaseOutputPath>E:\United_App\Comunicator\Bin</BaseOutputPath>	
+    <BaseOutputPath>F:\StarNFT2\Bin</BaseOutputPath>	
   </PropertyGroup>
 
 </Project>
