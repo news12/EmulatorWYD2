@@ -15,5 +15,7 @@
 	<CharacterSelectFail>Falha ao tentar selecionar o personagem.</CharacterSelectFail>
 	<CharacterNotFound>Personagem não econtrado.</CharacterNotFound>
 	<WellcometoWord>Bem vindo ao mundo de WYD Beta!!!</WellcometoWord>
+	<ImportedFromGame>Importado para o Jogo</ImportedFromGame>
+	<ImportFail>Falha ao Exportar para o Jogo</ImportFail>
 	
 </LangServer>

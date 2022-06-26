@@ -2,7 +2,7 @@
 using Db.Data;
 using Service.Interface;
 
-namespace Services.Service
+namespace Service.Service
 {
     public class AccountService : IAccountService
     {
@@ -26,7 +26,8 @@ namespace Services.Service
 
         }
 
-        public uint GetStatus(int Id)
+
+        public int GetStatus(int Id)
         {
             using var context = new MainDbContext();
             try
@@ -46,7 +47,7 @@ namespace Services.Service
             }
         }
 
-        public void SetStatus(int Id, uint Status)
+        public void SetStatus(int Id, int Status)
         {
             using var context = new MainDbContext();
             try
@@ -81,12 +82,59 @@ namespace Services.Service
         }
 
         //not implement in interface
-         protected List<Account> GetListConnected()
+         protected List<Account> GetListStatus(int status)
         {
             using var context = new MainDbContext();
             try
             {
-                return context.Accounts.Where(b => b.Status > 0).ToList();
+                return context.Accounts.Where(b => b.Status == status).ToList();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        //not implement in interface
+        protected List<DonateGame> GetDonateStatus(int gameId, int status)
+        {
+            using var context = new MainDbContext();
+            try
+            {
+                return context.Donates.Where(b => b.Game_Id == gameId && b.Status == status).ToList();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        //not implement in interface
+        protected List<PassGame> GetPassStatus(int gameId, int status)
+        {
+            using var context = new MainDbContext();
+            try
+            {
+                return context.Passwords.Where(b => b.Game_Id == gameId && b.Status == status).ToList();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        protected List<Account> GetListAll()
+        {
+            using var context = new MainDbContext();
+            try
+            {
+                return context.Accounts.ToList();
 
             }
             catch (Exception)
@@ -101,14 +149,46 @@ namespace Services.Service
             using var context = new MainDbContext();
             try
             {
-                List<Account> newList = GetListConnected();
+                List<Account> newList = GetListStatus(0);
 
                 foreach (var acc in newList)
                 {
-                    acc.Status = 0;
+                    acc.Status = 1;
                     context.Accounts.SingleUpdate(acc);
                     context.SaveChanges();
                 }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<DonateGame> GetDonations(int gameId, int status)
+        {
+            using var context = new MainDbContext();
+            try
+            {
+                List<DonateGame> newList = GetDonateStatus(gameId, status);
+
+                return newList;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<Account> GetAccounts(int status)
+        {
+            using var context = new MainDbContext();
+            try
+            {
+                List<Account> newList = GetListStatus(status);
+
+                return newList;
             }
             catch (Exception)
             {
@@ -130,6 +210,73 @@ namespace Services.Service
             {
 
                 throw;
+            }
+        }
+
+        public void UpdateDonate(DonateGame data, string field)
+        {
+            using var context = new MainDbContext();
+            try
+            {
+                context.Attach(data);
+                context.Entry(data).Property(field).IsModified = true;
+                context.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<PassGame> GetPasswords(int gameId, int status)
+        {
+            using var context = new MainDbContext();
+            try
+            {
+                List<PassGame> newList = GetPassStatus(gameId, status);
+
+                return newList;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public void UpdatePassword(PassGame data, string field)
+        {
+            using var context = new MainDbContext();
+            try
+            {
+                context.Attach(data);
+                context.Entry(data).Property(field).IsModified = true;
+                context.SaveChanges();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public void CreateDonate(DonateGame data)
+        {
+            using (var context = new MainDbContext())
+            {
+                try
+                {
+                    context.Donates.Add(data);
+                    context.SaveChanges();
+
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             }
         }
     }

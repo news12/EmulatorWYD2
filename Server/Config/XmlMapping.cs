@@ -19,6 +19,21 @@ namespace Application.Config
 
         [XmlElement("StringConnection")]
         public string StringConnection { get; set; }
+
+        [XmlElement("ImportUser")]
+        public string ImportUser { get; set; }
+
+        [XmlElement("ImportDonate")]
+        public string ImportDonate { get; set; }
+
+        [XmlElement("ImportPass")]
+        public string ImportPass { get; set; }
+
+        [XmlElement("ImportCharacter")]
+        public string ImportCharacter { get; set; }
+
+        [XmlElement("ImportNotice")]
+        public string ImportNotice { get; set; }
     }
 
     [XmlRoot("LangServer")]
@@ -40,6 +55,8 @@ namespace Application.Config
         public string CharacterSelectFail { get; set; }
         public string CharacterNotFound { get; set; }
         public string WellcometoWord { get; set; }
+        public string ImportedFromGame { get; set; }
+        public string ImportFail { get; set; }
 
         //Lang Db
         public string DbNotConnected { get; set; }
@@ -100,5 +117,21 @@ namespace Application.Config
 		public string Mount { get; set; }
 		public string Mantle { get; set; }
      
+    }
+
+    [XmlRoot("player")]
+    public class Player
+    {
+        public string? UserName { get; set; }
+        public string? Name { get; set; }
+        public int Fame { get; set; }
+        public int CapeInfo { get; set; }
+        public int GuildIndex { get; set; }
+        public int ClassInfo { get; set; }
+        public Int64 Exp { get; set; }
+        public int Level { get; set; }
+        public int GuildMemberType { get; set; }
+        public int Evo { get; set; }
+
     }
 }

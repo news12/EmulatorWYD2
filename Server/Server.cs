@@ -1,4 +1,5 @@
-﻿using Application.Controller;
+﻿using Application.Config;
+using Application.Controller;
 
 namespace Application
 {
@@ -13,7 +14,10 @@ namespace Application
 
             Game.Run(args);
 
+
         }
-    }
+	}
+
+
 
 }

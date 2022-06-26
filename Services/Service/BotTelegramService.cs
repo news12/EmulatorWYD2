@@ -1,18 +1,18 @@
-﻿using Db.Entities;
-using Db.Data;
+﻿using Db.Data;
+using Db.Entities;
 using Service.Interface;
-
 namespace Service.Service
 {
-    public class CharacterService : ICharacterService
+
+    public class BotTelegramService : IBotTelegram
     {
-        public void Create(Character data)
+        public void Create(BotDonate data)
         {
             using (var context = new MainDbContext())
             {
                 try
                 {
-                    context.Characters.Add(data);
+                    context.BotDonates.Add(data);
                     context.SaveChanges();
 
 
@@ -25,17 +25,17 @@ namespace Service.Service
             }
         }
 
-        public Character? Get(string name)
+        public BotDonate? Get(string name)
         {
             throw new NotImplementedException();
         }
 
-        public List<Character> GetAll()
+        public List<BotDonate> GetAll()
         {
             using var context = new MainDbContext();
             try
             {
-                return context.Characters.ToList();
+                return context.BotDonates.ToList();
 
             }
             catch (Exception)
@@ -45,17 +45,29 @@ namespace Service.Service
             }
         }
 
-        public void Update(Character data)
+        public List<BotDonate> GetListStatus(int status)
         {
             using var context = new MainDbContext();
             try
             {
-                context.Characters.SingleUpdate(data);
+                return context.BotDonates.Where(b => b.Status == status).ToList();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public void Update(BotDonate data)
+        {
+            using var context = new MainDbContext();
+            try
+            {
+                context.BotDonates.SingleUpdate(data);
                 context.SaveChanges();
 
-              /*  context.Attach(data);
-                context.Entry(data).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                context.SaveChanges();*/
             }
             catch (Exception)
             {
